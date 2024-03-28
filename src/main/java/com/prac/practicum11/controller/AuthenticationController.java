@@ -6,6 +6,7 @@ import com.prac.practicum11.service.TokenService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthenticationController {
 
-    private IAuthenticationService authenticationService;
+    private final IAuthenticationService authenticationService;
 
     private final AuthenticationManager authenticationManager;
 
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     public AuthenticationController(IAuthenticationService authenticationService, AuthenticationManager authenticationManager, TokenService tokenService) {
         this.authenticationService = authenticationService;
@@ -42,9 +43,16 @@ public class AuthenticationController {
                 Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(customer.getUsername(), customer.getPassword()));
                 return tokenService.generateToken(authentication);
             }
-            return null;
+            // return json with error message
+            return "Invalid username or password";
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            // return the exception message
+            return e.getMessage();
         }
+    }
+
+    @GetMapping("/")
+    public String home() {
+        return "Welcome to the home page!";
     }
 }
