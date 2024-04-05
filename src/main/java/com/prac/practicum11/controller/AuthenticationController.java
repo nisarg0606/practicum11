@@ -3,6 +3,7 @@ package com.prac.practicum11.controller;
 import com.prac.practicum11.model.Customer;
 import com.prac.practicum11.service.IAuthenticationService;
 import com.prac.practicum11.service.TokenService;
+//import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,7 +42,8 @@ public class AuthenticationController {
         try {
             if (authenticationService.login(customer.getUsername(), customer.getPassword())) {
                 Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(customer.getUsername(), customer.getPassword()));
-                return tokenService.generateToken(authentication);
+//                return json with token and a success message
+                    return tokenService.generateToken(authentication);
             }
             // return json with error message
             return "Invalid username or password";

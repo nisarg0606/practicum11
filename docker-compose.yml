@@ -1,0 +1,48 @@
+
+services:
+  practicum11:
+    image: "practicum11"
+    build:
+      context: ../practicum11
+      dockerfile: Dockerfile
+    container_name:  practicum11
+    ports:
+      - "4000:3000"
+    environment:
+      - server.port=3000
+      - spring.datasource.url=jdbc:postgresql://primes-database:5432/primes
+      - spring.datasource.username=root
+      - spring.datasource.password=root
+      - spring.datasource.restart=false
+
+  mongo-database:
+    image: mongo:7.0.0
+    container_name: mongo-database
+    ports:
+      - "4002:27017"
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  primes-database:
+    image: postgres:alpine
+    ports:
+      - "4003:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: primes
+
+  azure-storage:
+    image: azure-storage
+    build:
+      context: ../azure-storage-service
+      dockerfile: Dockerfile
+    container_name: azure-storage
+    ports:
+      - "4001:3000"
+    environment:
+      - PORT=3000
+      - STORAGE_ACCOUNT_NAME=sepracticum9group5
+      - STORAGE_ACCESS_KEY="AccessKey"
+    restart: "no"
