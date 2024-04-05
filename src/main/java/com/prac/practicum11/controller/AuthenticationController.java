@@ -29,7 +29,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public boolean register(@RequestBody Customer customer) {
+    public String register(@RequestBody Customer customer) {
         try {
             return authenticationService.register(customer);
         } catch (Exception e) {
@@ -49,7 +49,7 @@ public class AuthenticationController {
             return "Invalid username or password";
         } catch (Exception e) {
             // return the exception message
-            return e.getMessage();
+            return "Error logging in";
         }
     }
 

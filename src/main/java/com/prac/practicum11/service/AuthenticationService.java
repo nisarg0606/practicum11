@@ -22,15 +22,19 @@ public class AuthenticationService implements IAuthenticationService, UserDetail
     }
 
     @Override
-    public boolean register(Customer customer) {
+    public String register(Customer customer) {
+        // check if the user already exists
+        if (authenticationRepository.findByUsername(customer.getUsername()) != null) {
+            return "User already exists";
+        }
         BCryptPasswordEncoder bc = new BCryptPasswordEncoder();
         String passwordEncoded = bc.encode(customer.getPassword());
         customer.setPassword(passwordEncoded);
         try{
             authenticationRepository.save(customer);
-            return true;
+            return "User registered successfully";
         } catch (Exception e) {
-            return false;
+            return "Error registering user";
         }
     }
 
