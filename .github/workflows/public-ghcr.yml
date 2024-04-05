@@ -5,10 +5,6 @@ on:
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
-    permissions:
-      checks: write
-      contents: read
-      packages: write
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -24,15 +20,6 @@ jobs:
 
       - name: Run the unit tests
         run: mvn --batch-mode -Dmaven.test.failure.ignore=true test
-
-#      - name: Report
-#        uses: dorny/test-reporter@v1
-#        if: always()
-#        with:
-#          name: Maven Tests
-#          path: target/surefire-reports/*.xml
-#          reporter: java-junit
-#          fail-on-error: true
 
       - name: Build and push the image
         run: |
