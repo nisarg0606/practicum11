@@ -1,11 +1,10 @@
-
 services:
   practicum11:
     image: "practicum11"
     build:
       context: ../practicum11
       dockerfile: Dockerfile
-    container_name:  practicum11
+    container_name: practicum11
     ports:
       - "4000:3000"
     environment:
@@ -33,16 +32,36 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: primes
 
-  azure-storage:
-    image: azure-storage
-    build:
-      context: ../azure-storage-service
-      dockerfile: Dockerfile
-    container_name: azure-storage
+#  azure-storage:
+#    image: azure-storage
+#    build:
+#      context: ../azure-storage-service
+#      dockerfile: Dockerfile
+#    container_name: azure-storage
+#    ports:
+#      - "4001:3000"
+#    environment:
+#      - PORT=3000
+#      - STORAGE_ACCOUNT_NAME=sepracticum9group5
+#      - STORAGE_ACCESS_KEY="AccessKey"
+#    restart: "no"
+
+  rabbit-mq:
+    image: rabbitmq:3.12.4-management
+    container_name: rabbit-mq
     ports:
-      - "4001:3000"
+      - "4006:5672"
+      - "4007:15672"
     environment:
-      - PORT=3000
-      - STORAGE_ACCOUNT_NAME=sepracticum9group5
-      - STORAGE_ACCESS_KEY="AccessKey"
-    restart: "no"
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+    restart: always
+
+  history-database:
+    image: postgres:alpine
+    container_name: history-database
+    ports:
+      - "4008:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: history
